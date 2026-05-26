@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUCIVEX | Ignite The Unspoken</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #05010a;
+            --bg-card: #110521;
+            --bg-card-expanded: #1c0b36;
+            --primary: #a855f7;
+            --primary-glow: rgba(168, 85, 247, 0.5);
+            --text-main: #f3f4f6;
+            --text-muted: #a1a1aa;
+            --accent: #d8b4fe;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #230b4da1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 1, 10, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: #fff;
+        }
+
+        /* --- Exact Reproduction of Lucivex Core Vector Logo Emblem --- */
+        .lucivex-emblem {
+            width: 38px;
+            height: 38px;
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
+
+        .lucivex-emblem path {
+            fill: none;
+            stroke: #c084fc;
+            stroke-width: 7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .lucivex-emblem .star {
+            fill: #fff;
+            stroke: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, #7c3aed, var(--primary));
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px var(--primary-glow);
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.7);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 5%;
+            position: relative;
+            background: radial-gradient(circle at 75% 30%, #25094d 0%, transparent 55%);
+            margin-top: 60px;
+        }
+
+        .hero-branding-block {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+            background: rgba(168, 85, 247, 0.1);
+            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .hero-branding-block span {
+            font-weight: 900;
+            letter-spacing: 5px;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .hero-content {
+            max-width: 750px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4.2rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #e9d5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-graphics {
+            position: absolute;
+            right: 5%;
+            top: 25%;
+            width: 40%;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-glow-circle {
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80') center/cover;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 60px rgba(168, 85, 247, 0.35), inset 0 0 40px #000;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        /* --- Sections Core --- */
+        section {
+            padding: 6rem 5%;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .section-title span {
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        .section-subtitle-desc {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 4rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        /* --- Expandable Cards Dynamic Architecture --- */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .lucivex-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                        background-color 0.4s ease, 
+                        border-color 0.4s ease,
+                        box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+
+        .lucivex-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 30px rgba(168, 85, 247, 0.25);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .lucivex-card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .lucivex-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .lucivex-card p.short-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Hidden deep payload data container inside the card */
+        .extended-payload {
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1);
+            margin-top: 0;
+            border-top: 1px solid rgba(168, 85, 247, 0);
+            padding-top: 0;
+        }
+
+        .extended-payload h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .extended-payload ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .extended-payload ul li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: #e4e4e7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .extended-payload ul li::before {
+            content: "▹";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .close-card-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .close-card-btn:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+
+        /* Active Expanded States triggers dynamically */
+        .lucivex-card.is-expanded {
+            grid-column: 1 / -1; /* Forces the active element to sweep full width cleanly */
+            background-color: var(--bg-card-expanded);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(168, 85, 247, 0.35);
+            cursor: default;
+            transform: none !important;
+        }
+
+        .lucivex-card.is-expanded .extended-payload {
+            max-height: 500px;
+            opacity: 1;
+            visibility: visible;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(168, 85, 247, 0.3);
+            padding-top: 1.5rem;
+        }
+
+        /* --- Roadmap Section --- */
+        .roadmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .roadmap-step {
+            display: flex;
+            background: rgba(17, 5, 33, 0.6);
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+            border-radius: 0 16px 16px 0;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .step-num {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: rgba(168, 85, 247, 0.35);
+        }
+
+        /* --- Secure Portal Architecture --- */
+        .auth-container {
+            max-width: 520px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            padding: 3rem 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #7c3aed, var(--primary));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.95;
+        }
+
+        /* --- Locked Dashboard Framework --- */
+        .dashboard-window {
+            display: none; 
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #090312;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 65px rgba(168, 85, 247, 0.2);
+        }
+
+        .dash-header {
+            background: #150824;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+        }
+
+        .lock-badge {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dash-layout {
+            display: grid;
+            grid-template-columns: 290px 1fr;
+            min-height: 600px;
+        }
+
+        .dash-sidebar {
+            background: #0e0419;
+            padding: 2rem;
+            border-right: 1px solid rgba(168, 85, 247, 0.1);
+        }
+
+        .dash-content {
+            padding: 2.5rem;
+            background: #06020c;
+        }
+
+        /* --- Directory Tables --- */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: rgba(17, 5, 33, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .data-table th, .data-table td {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+        }
+
+        .data-table th {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--accent);
+        }
+
+        .action-panel {
+            background: var(--bg-card);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .share-gmail-btn {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .share-gmail-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* --- Toast Systems --- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
+            font-weight: 600;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        /* --- Footer Architecture --- */
+        footer {
+            background: #030005;
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(168, 85, 247, 0.15);
+        }
+
+        .footer-social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.25rem;
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .footer-social-link:hover {
+            background: rgba(168, 85, 247, 0.1);
+            box-shadow: 0 0 15px var(--primary-glow);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast">Action logged successfully.</div>
+
+    <nav>
+        <div class="logo-area">
+            <svg class="lucivex-emblem" viewBox="0 0 100 100">
+                <path d="M 25,28 L 46,52 L 46,78 L 25,56" />
+                <path d="M 75,28 L 54,52 L 54,78 L 75,56" />
+                <path d="M 50,22 L 50,90" stroke-width="5" />
+                <path class="star" d="M 50,5 Q 50,15 60,15 Q 50,15 50,25 Q 50,15 40,15 Q 50,15 50,5 Z" />
+            </svg>
+            LUCIVEX
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#hub">Ideas Hub</a></li>
+            <li><a href="#roadmap">Strategic Roadmap</a></li>
+            <li><a href="#workspace">Workspace Portal</a></li>
+        </ul>
+        <a href="#workspace" class="cta-btn">Access Hub Portal</a>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-branding-block">
+            <svg class="lucivex-emblem" viewBox="0 0 100 100" style="width:26px; height:26px;">
+                <path d="M 25,28 L 46,52 L 46,78 L 25,56" />
+                <path d="M 75,28 L 54,52 L 54,78 L 75,56" />
+                <path d="M 50,22 L 50,90" stroke-width="5" />
+                <path class="star" d="M 50,5 Q 50,15 60,15 Q 50,15 50,25 Q 50,15 40,15 Q 50,15 50,5 Z" />
+            </svg>
+            <span>LUCIVEX SYSTEM</span>
+        </div>
+        
+        <div class="hero-content">
+            <h1>Where ideas find impact.</h1>
+            <p>We are the strategic digital engine engineered to transform rare concepts into explosive, scalable, real-world impacts. Built for dreamers. Made for doers.</p>
+            <a href="#workspace" class="cta-btn" style="padding: 1rem 2.5rem; font-size: 1.1rem;">Launch Workspace Terminal</a>
+        </div>
+        <div class="hero-graphics">
+            <div class="main-glow-circle"></div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title">A Revolution Of <span>Young Minds</span></h2>
+        <p class="section-subtitle-desc">Click any pillar below to expand the ecosystem's structural blueprint and operational overview.</p>
+        
+        <div class="grid-layout">
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">✨</div>
+                <h3>Ideation & Innovation</h3>
+                <p class="short-desc">Where ideas find power. Click to expand strategic processing workflows.</p>
+                <div class="extended-payload">
+                    <h4>Operational Matrix</h4>
+                    <ul>
+                        <li>Uncovering completely overlooked modern tech market conceptual niches.</li>
+                        <li>Mapping basic logic paths and calculating processing complexities.</li>
+                        <li>Establishing functional software data schemas and validation targets.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Matrix</button>
+                </div>
+            </div>
+
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">💡</div>
+                <h3>Creative Collaboration</h3>
+                <p class="short-desc">For dreamers and doers. Click to expand synchronization details.</p>
+                <div class="extended-payload">
+                    <h4>Synchronization Protocols</h4>
+                    <ul>
+                        <li>Bridging cross-functional global creators within structured environments.</li>
+                        <li>Real-time component modular testing pools and resource distributions.</li>
+                        <li>Eliminating technical infrastructure drag across active design nodes.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Matrix</button>
+                </div>
+            </div>
+
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">🤝</div>
+                <h3>Support & Mentorship</h3>
+                <p class="short-desc">Elevating good ideas. Click to review engineering guidance parameters.</p>
+                <div class="extended-payload">
+                    <h4>Guidance Blueprint</h4>
+                    <ul>
+                        <li>Direct system performance diagnostics across upcoming team nodes.</li>
+                        <li>Code stability checks, structural layout assistance, and debugging.</li>
+                        <li>Calibrating design elements to handle heavy structural server loads.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Matrix</button>
+                </div>
+            </div>
+
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">🏆</div>
+                <h3>Community & Success</h3>
+                <p class="short-desc">Recognizing top ideas. Click to examine expansion pipelines.</p>
+                <div class="extended-payload">
+                    <h4>Expansion Channels</h4>
+                    <ul>
+                        <li>Highlighting top-performing module prototypes across active networks.</li>
+                        <li>Direct pipeline routing into modern capital seed integration paths.</li>
+                        <li>Turning early functional software setups into independent platforms.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Matrix</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hub" style="background: rgba(12, 4, 26, 0.4);">
+        <h2 class="section-title">The Lucivex <span>Ideas Hub</span></h2>
+        <p class="section-subtitle-desc">The internal technical processing matrix through which every single system concept passes.</p>
+        
+        <div class="grid-layout">
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">🧪</div>
+                <h3>Ideation Lab</h3>
+                <p class="short-desc">Conceptualizing the unknown. Click to unpack structural methodologies.</p>
+                <div class="extended-payload">
+                    <h4>Methodology Blueprint</h4>
+                    <ul>
+                        <li>Isolating abstract conceptual claims from market noise profiles.</li>
+                        <li>Establishing standard input-output mock data test criteria environments.</li>
+                        <li>Initial verification loops tracking true functional capability limits.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Engine View</button>
+                </div>
+            </div>
+
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">🧠</div>
+                <h3>Thought Design</h3>
+                <p class="short-desc">Structured thinking for complex problems. Click to view workflow arrays.</p>
+                <div class="extended-payload">
+                    <h4>Workflow Architecture</h4>
+                    <ul>
+                        <li>Translating unrefined notions into clear visual wireframe flowcharts.</li>
+                        <li>Rigorous algorithmic performance tuning before layout deployment.</li>
+                        <li>Applying enterprise safety tokens to safeguard system endpoints.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Engine View</button>
+                </div>
+            </div>
+
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">🔮</div>
+                <h3>Feedback & Refinement</h3>
+                <p class="short-desc">Polishing concepts through peer review. Click to inspect optimization cycles.</p>
+                <div class="extended-payload">
+                    <h4>Optimization Engine</h4>
+                    <ul>
+                        <li>Anonymized internal technical peer review tracking logic errors.</li>
+                        <li>Performance load testing across multiple virtual device profiles.</li>
+                        <li>Eliminating UI friction layers to ensure clean navigation loops.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Engine View</button>
+                </div>
+            </div>
+
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">🔍</div>
+                <h3>Validation Network</h3>
+                <p class="short-desc">Market testing and proof of concept. Click to view validation filters.</p>
+                <div class="extended-payload">
+                    <h4>Validation Architecture</h4>
+                    <ul>
+                        <li>Targeted sandbox deployment to gather authentic interaction logs.</li>
+                        <li>Mathematical retention metrics analysis vs alternative protocols.</li>
+                        <li>Certifying definitive proof-of-concept indicators ahead of buildouts.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Engine View</button>
+                </div>
+            </div>
+
+            <div class="lucivex-card" onclick="expandCard(this, event)">
+                <div class="card-icon">🚀</div>
+                <h3>Prototype Fund</h3>
+                <p class="short-desc">Pre-seed resources for promising ideas. Click to review allocation details.</p>
+                <div class="extended-payload">
+                    <h4>Resource Allocation</h4>
+                    <ul>
+                        <li>Direct injection of high-bandwidth compute cloud runtime limits.</li>
+                        <li>Dedicated development assistance to expedite live environment launch.</li>
+                        <li>Connecting verified platforms directly with key investment networks.</li>
+                    </ul>
+                    <button class="close-card-btn" onclick="collapseCard(this, event)">Close Engine View</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap">
+        <h2 class="section-title">The Strategic <span>Roadmap</span></h2>
+        <p class="section-subtitle-desc">The strict architectural deployment timeline utilized to take early system concepts from the drawing board to global servers.</p>
+        <div class="roadmap-container">
+            <div class="roadmap-step">
+                <div class="step-num">01</div>
+                <div>
+                    <h3>Phase 1: Strategic Ideation</h3>
+                    <p>Detecting industry market structural gaps, drafting core value protocols, and performing deep foundational patent landscaping reviews.</p>
+                </div>
+            </div>
+            <div class="roadmap-step">
+                <div class="step-num">02</div>
+                <div>
+                    <h3>Phase 2: Internal & External Feedback</h3>
+                    <p>Processing metrics using real-world expert validation panels, running targeted beta tester sprints, and organizing detailed performance A/B models.</p>
+                </div>
+            </div>
+            <div class="roadmap-step">
+                <div class="step-num">03</div>
+                <div>
+                    <h3>Phase 3: Agile Development</h3>
+                    <p>Deploying modern agile sprint schedules, orchestrating cross-functional dev sprints, and checking structural project milestones hourly.</p>
+                </div>
+            </div>
+            <div class="roadmap-step">
+                <div class="step-num">04</div>
+                <div>
+                    <h3>Phase 4: Scale & Influence</h3>
+                    <p>Executing high-converting Go-To-Market programs, tracking key data growth indicators, and scaling cross-border global networks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="workspace" style="background: linear-gradient(180deg, var(--bg-dark) 0%, #0e031c 100%);">
+        <h2 class="section-title">The Gateway Portal: <span>Concept To Impact</span></h2>
+        <p class="section-subtitle-desc" id="portalDesc">Initialize your administrative session environment. Once connection initializes, strict browser escape rules apply.</p>
+        
+        <div id="authBox" class="auth-container">
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.6rem; text-align: center;">Initialize Workspace</h3>
+            <form id="signupForm" onsubmit="handleRegistration(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" required placeholder="e.g., Alex Carter">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="alex@lucivex.com">
+                </div>
+                <div class="form-group">
+                    <label>Primary Occupation Focus</label>
+                    <select id="regOcc" required>
+                        <option value="Product Creator">Product Creator</option>
+                        <option value="Software Engineer">Software Engineer</option>
+                        <option value="UI/UX Visual Architect">UI/UX Visual Architect</option>
+                        <option value="Strategic Growth Hacker">Strategic Growth Hacker</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Gain Access & Build Dashboard</button>
+            </form>
+        </div>
+
+        <div id="dashboardApp" class="dashboard-window">
+            <div class="dash-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #ef4444;"></span>
+                    <h4 id="welcomeUser" style="font-size: 1.2rem; font-weight: 700;">Workspace Context: Locked</h4>
+                </div>
+                <div class="lock-badge">Portal Exit Restrictions Active</div>
+            </div>
+            
+            <div class="dash-layout">
+                <div class="dash-sidebar">
+                    <p style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; color: var(--primary); font-weight: 700; margin-bottom: 1.5rem;">System Navigation</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div style="padding: 0.75rem; background: rgba(168, 85, 247, 0.15); border-radius: 8px; color: #fff; font-weight: 600;">👥 Team Nodes Directory</div>
+                        <div style="padding: 0.75rem; border-radius: 8px; color: #4b5563; font-style:italic; cursor: not-allowed;">🔒 System Core Configs (Locked)</div>
+                    </div>
+                    <div style="margin-top: 8rem; font-size: 0.8rem; color: #ef4444; background: rgba(239,68,68,0.1); padding: 0.75rem; border-radius: 6px; border: 1px solid rgba(239,68,68,0.2);">
+                        ⚠️ <strong>Exit Policy:</strong> Leaving this workspace window requires explicit, master administrator override authorization.
+                    </div>
+                </div>
+
+                <div class="dash-content">
+                    <div class="action-panel">
+                        <h4 style="margin-bottom: 1rem; color: #fff; font-size: 1.1rem;">Register Internal Team Member Nodes</h4>
+                        <form id="teamForm" onsubmit="addTeamMember(event)" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: end;">
+                            <div>
+                                <label style="display:block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Node Name</label>
+                                <input type="text" id="teamName" required placeholder="User name" style="width:100%; padding: 0.6rem; background: #130924; border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 6px; color:#fff;">
+                            </div>
+                            <div>
+                                <label style="display:block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Node Occupation Focus</label>
+                                <input type="text" id="teamOcc" required placeholder="e.g., Growth Lead" style="width:100%; padding: 0.6rem; background: #130924; border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 6px; color:#fff;">
+                            </div>
+                            <button type="submit" class="submit-btn" style="padding: 0.65rem 1.5rem;">Add Member Node</button>
+                        </form>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+                        <h3 style="font-size: 1.3rem;">Active Cluster Personnel Node Logs</h3>
+                        <button class="share-gmail-btn" onclick="sendDataToAdmin()">
+                            <svg style="width:18px; height:18px; fill:currentColor;" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            Dispatch Logs to Lucivex HQ
+                        </button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Operational ID</th>
+                                <th>Name Spec</th>
+                                <th>Occupation Scope</th>
+                                <th>Status Flag</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p style="margin-bottom: 0.5rem; font-weight: 700; letter-spacing: 2px; color: #fff;">LUCIVEX TECH ECOSYSTEM</p>
+        <p>&copy; 2026 LUCIVEX. All rights reserved. Content pipeline routing directly monitored.</p>
+        
+        <div>
+            <a href="https://instagram.com/lucivex.official" target="_blank" class="footer-social-link">
+                <svg style="width:16px; height:16px; fill:currentColor;" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                Follow @lucivex.official
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        let systemState = {
+            portalLocked: false,
+            currentUser: null,
+            teamClusterNodes: [
+                { id: "LXV-802", name: "Sarah Connor", occupation: "Lead Systems Engineer", status: "Active" },
+                { id: "LXV-144", name: "Marcus Wright", occupation: "Product Architect", status: "Active" }
+            ]
+        };
+
+        // Click-to-Expand Subtopic Matrix Functionality
+        function expandCard(cardElement, event) {
+            // If clicking the close button inside the card, prevent parent re-trigger
+            if (event.target.classList.contains('close-card-btn')) return;
+            
+            // Collapse any currently expanded card in the section first for smooth layout transitions
+            const container = cardElement.closest('.grid-layout');
+            const activeCard = container.querySelector('.lucivex-card.is-expanded');
+            if (activeCard && activeCard !== cardElement) {
+                activeCard.classList.remove('is-expanded');
+            }
+
+            // Engage active expanded view status on selected subtopic card
+            cardElement.classList.add('is-expanded');
+        }
+
+        function collapseCard(buttonElement, event) {
+            event.stopPropagation(); // Halt bubbling events triggering card expansion loop
+            const card = buttonElement.closest('.lucivex-card');
+            card.classList.remove('is-expanded');
+        }
+
+        // Anti-Escape System Lock Implementation
+        window.addEventListener('beforeunload', function (e) {
+            if (systemState.portalLocked) {
+                const confirmationMessage = 'Security Directive: You do not have exit permissions for the Lucivex Workspace Portal. Leaving will break active terminal telemetry data tracks.';
+                (e || window.event).returnValue = confirmationMessage; 
+                return confirmationMessage; 
+            }
+        });
+
+        function switchAuthView(view) {
+            const authBox = document.getElementById('authBox');
+            const dashboardApp = document.getElementById('dashboardApp');
+            
+            if (view === 'dashboard') {
+                authBox.style.display = 'none';
+                dashboardApp.style.display = 'block';
+                systemState.portalLocked = true; // Activate page exit barrier
+                renderTable();
+            } else {
+                authBox.style.display = 'block';
+                dashboardApp.style.display = 'none';
+                systemState.portalLocked = false;
+            }
+        }
+
+        function handleRegistration(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const occupation = document.getElementById('regOcc').value;
+
+            systemState.currentUser = { name, email, occupation };
+
+            systemState.teamClusterNodes.unshift({
+                id: "LXV-ADMIN-NODE",
+                name: `${name} (You)`,
+                occupation: occupation,
+                status: "Cluster Admin"
+            });
+
+            document.getElementById('welcomeUser').innerText = `Admin Session: ${name}`;
+            document.getElementById('portalDesc').innerText = "ALERT: Portal administrative session lock engaged. Disconnection routines require master manual authentication.";
+            document.getElementById('portalDesc').style.color = "#ef4444";
+            
+            confetti({
+                particleCount: 150,
+                spread: 85,
+                colors: ['#a855f7', '#c084fc', '#fff']
+            });
+
+            switchAuthView('dashboard');
+        }
+
+        function addTeamMember(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('teamName');
+            const occInput = document.getElementById('teamOcc');
+
+            const randomId = "LXV-" + Math.floor(100 + Math.random() * 900);
+
+            systemState.teamClusterNodes.push({
+                id: randomId,
+                name: nameInput.value,
+                occupation: occInput.value,
+                status: "Active"
+            });
+
+            nameInput.value = '';
+            occInput.value = '';
+            
+            renderTable();
+            showToast("New personnel node registered to portal array memory.");
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+
+            systemState.teamClusterNodes.forEach(node => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-family: monospace; color: var(--primary); font-weight:700;">${node.id}</td>
+                    <td style="font-weight: 600; color:#fff;">${node.name}</td>
+                    <td>${node.occupation}</td>
+                    <td><span class="badge" style="${node.id === 'LXV-ADMIN-NODE' ? 'background: rgba(16,185,129,0.15); color:#10b981; border: 1px solid #10b981;' : ''}">${node.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // Production Communications Pipeline Routing (Explicit Destination Binding)
+        function sendDataToAdmin() {
+            const targetAdminGmail = "lucivex.official@outlook.com";
+            
+            let emailBody = `LUCIVEX SECURE SYSTEM DATA EXPORT REPORT\n`;
+            emailBody += `======================================================\n\n`;
+            emailBody += `Authenticated Admin Node: ${systemState.currentUser?.name || 'Unregistered'}\n`;
+            emailBody += `Operational Capacity: ${systemState.currentUser?.occupation || 'None Specified'}\n`;
+            emailBody += `Network Contact Path: ${systemState.currentUser?.email || 'None'}\n\n`;
+            emailBody += `CURRENT WORKSPACE CLUSTER PERSONNEL MATRIX:\n`;
+            emailBody += `------------------------------------------------------\n`;
+            
+            systemState.teamClusterNodes.forEach(node => {
+                emailBody += `> [${node.id}] ${node.name.padEnd(22)} | Focus: ${node.occupation.padEnd(25)} | Flag: ${node.status}\n`;
+            });
+
+            emailBody += `\n======================================================\n`;
+            emailBody += `Secure data sync cycle finalized. Transmitting directly to admin inbox node connection.`;
+
+            const subject = encodeURIComponent(`LUCIVEX Portal Node Activity Log - [${systemState.currentUser?.name || 'Cluster Sync'}]`);
+            const bodyText = encodeURIComponent(emailBody);
+            
+            window.location.href = `mailto:${targetAdminGmail}?subject=${subject}&body=${bodyText}`;
+            
+            showToast("Packing local data cluster telemetry... Opening communication client.");
+        }
+
+        // Active Link Highlighting Control 
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 120) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
